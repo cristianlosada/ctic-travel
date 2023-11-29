@@ -101,7 +101,7 @@ if ($route != $_SESSION['user_role']) {
     <div id="div_tarjetas"></div>
 
     <footer>
-      <p>&copy; 2023 Desarrollado por Crissoft con ♥️. | <a href="https://www.linkedin.com/in/cristian-losada-6ab093162/">Lindkeln</a></p>
+      <p>&copy; 2023 Desarrollado por Crissoft con ♥️. | <a href="https://www.linkedin.com/in/cristian-losada-6ab093162/">linkedin</a></p>
     </footer>
 </body>
 

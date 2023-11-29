@@ -25,14 +25,26 @@ function suscribir_plan_turistico(plan_id) {
     type: "POST",
     data: `action=suscribir_plan_turistico&plan_turistico_id=${plan_id}`,
     success: function (response) {
-      
+      consultar_planes_turisticos_disponibles();
     },
     error: function (response) {
       alert("Error al crear el destino.");
     },
   });
 }
-
+function eliminar_suscripcion(plan_id) {
+  return $.ajax({
+    url: "/ctic-travel/controllers/ClientController.php",
+    type: "POST",
+    data: `action=eliminar_suscripcion&plan_turistico_id=${plan_id}`,
+    success: function (response) {
+      consultar_planes_turisticos_disponibles();
+    },
+    error: function (response) {
+      alert("Error al crear el destino.");
+    },
+  });
+}
 function consultar_planes_turisticos_disponibles() {
   return $.ajax({
     type: "POST",
@@ -42,25 +54,35 @@ function consultar_planes_turisticos_disponibles() {
       let datos       = JSON.parse(response);
       planes          = datos.planes;
       planes_usuarios = datos.planes_usuarios;
+      planes_vendidos = datos.planes_vendidos;
       usuario         = datos.usuario;
-      let html = ``;
-      console.log(planes_usuarios);
+      let html        = ``;
+      console.log(planes_vendidos);
       html += `<div class="row">`;
       for (const i in planes) {
-        inscrito           = 'primary';
-        mensaje_suscripcion = 'Inscribirse Ahora'
+        inscrito            = 'primary';
+        mensaje_suscripcion = 'Inscribirse Ahora';
+        funcion             = 'suscribir_plan_turistico';
+        cantidad_vendida    = (planes_vendidos[i]??[]).length
         if (planes_usuarios[i] != undefined && usuario == planes_usuarios[i].usuario_id) {
-          inscrito           = 'danger';
+          inscrito            = 'danger';
           mensaje_suscripcion = 'Quitar Inscripcion';
+          funcion             = 'eliminar_suscripcion'
         }
         // Crear un contenedor de tarjeta
         planes[i].forEach((element) => {
-          precio   = element.precio;
-          cantidad = element.cantidad_paquetes_habilitados;
-          noches   = element.duracion_noches;
-          dias     = element.duracion_dias;
+          precio     = element.precio;
+          cantidad   = element.cantidad_paquetes_habilitados;
+          noches     = element.duracion_noches;
+          dias       = element.duracion_dias;
           transporte = element.tipo_transporte;
         });
+        accion   = `onclick="${funcion}(${i});"`;
+        disabled = '';
+        if ((cantidad - cantidad_vendida) === 0){
+          accion   = '';
+          disabled = 'disabled';
+        }
         html += `
         <div class="col-md-6">
           <div class="card">
@@ -71,23 +93,21 @@ function consultar_planes_turisticos_disponibles() {
               <p class="card-text">
                 Experimenta aventuras inolvidables y crea recuerdos para toda la vida.
               </p>
-              <p class="card-price">Precio: $${precio}</p> <p class="card-price">Cupos: ${cantidad}</p>
+              <p class="card-price">Precio: $${precio}</p> <p class="card-price">Cupos: ${cantidad - cantidad_vendida}</p>
               <div>
                 <p class="card-text">
                   ${dias} Dias - ${noches} Noches
                 </p>
                 <span>Viajas por via ${transporte}</span><br>
               </div>
-              
             </div>
             <div class="card-footer">
-            <button class="btn btn-${inscrito}" onclick="suscribir_plan_turistico(${i});">${mensaje_suscripcion}</button>
+            <button class="btn btn-${inscrito} ${disabled}" ${accion}>${mensaje_suscripcion}</button>
             </div>
           </div>
         </div>`;
       }
       html += `</div>`;
-
       $(`#div_tarjetas`).html(html);
     },
     error: function (request, status, error) {},

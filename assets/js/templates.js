@@ -158,9 +158,6 @@ function template_crear_planes() {
                   <label for="destinos">Destinos Turísticos:</label>
                   <select name="planes_destinos[]" id="planes_destinos" class="form-control" multiple>
                       <!-- Agrega opciones de destinos turísticos dinámicamente si es necesario -->
-                      <option value="destino1">Destino 1</option>
-        <option value="destino2">Destino 2</option>
-        <option value="destino3">Destino 3</option>
                   </select>
               </div>
               <div class="mb-3">
@@ -176,8 +173,12 @@ function template_crear_planes() {
           </div>
           <div class="col-md-6">
               <div class="mb-3">
-                  <label for="duracion">Duración (días y noches):</label>
-                  <input type="text" name="planes_duracion" id="planes_duracion" class="form-control">
+                  <label for="duracion">Duración (días):</label>
+                  <input type="text" name="planes_duracion_dias" id="planes_duracion_dias" class="form-control">
+              </div>
+              <div class="mb-3">
+                  <label for="duracion">Duración (noches):</label>
+                  <input type="text" name="planes_duracion_noche" id="planes_duracion_noche" class="form-control">
               </div>
               <div class="mb-3">
                   <label for="transporte">Tipo de Transporte:</label>
@@ -207,13 +208,14 @@ function template_crear_planes() {
               <th>Destinos Turísticos</th>
               <th>Hospedajes</th>
               <th>Precio</th>
-              <th>Duración</th>
+              <th>Dias</th>
+              <th>Noches</th>
               <th>Tipo de Transporte</th>
               <th>Paquetes Habilitados</th>
               <th></th>
           </tr>
       </thead>
-      <tbody id="datos_planes_turisticos">
+      <tbody id="datos_planes">
           <!-- Aquí se mostrarán dinámicamente los datos de los planes turísticos -->
       </tbody>
   </table>
@@ -224,7 +226,7 @@ function template_crear_planes() {
 function template_estadisticas() {
   let html = ``;
   html = `<div class="container mt-4">
-  <h1 class="display-5 text-center">Estadísticas</h1>
+  <h1 class="display-5 text-center">Estadísticas - Reportes</h1>
 
   <div class="row mb-5">
       <div class="col-md-6">
@@ -266,7 +268,7 @@ function template_estadisticas() {
           </div>
       </div>
       <div class="col-md-6">
-          <button class="btn btn-primary float-right mb-3" onclick="generar_reporte_pdf();">Descargar estadísticas en PDF</button>
+          <button class="btn btn-primary float-right mb-3" onclick="generar_reporte_pdf();">Descargar reporte en PDF</button>
       </div>
   </div>
 </div>

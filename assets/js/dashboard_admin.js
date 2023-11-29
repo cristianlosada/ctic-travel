@@ -45,6 +45,7 @@ $("#btn_menu_crear_plan_turistico").click(async function () {
   div_bienvenida.attr(`hidden`, true);
   div_crear_plan_turistico.html(template_crear_planes());
   await cargar_datos_select_planes();
+  await consultar_planes();
   await agregar_validaciones_formulario_planes();
 });
 $("#btn_menu_ver_estadisticas").click(function () {

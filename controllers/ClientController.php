@@ -8,4 +8,7 @@ switch ($_POST['action']) {
   case 'suscribir_plan_turistico':
     echo json_encode($model->suscribir_plan_turistico());
     break;
+  case 'eliminar_suscripcion':
+    echo json_encode($model->eliminar_suscripcion());
+    break;
 }

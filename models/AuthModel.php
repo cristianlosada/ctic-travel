@@ -43,7 +43,6 @@ class AuthModel {
       ':password' => password_hash($password, PASSWORD_BCRYPT)
     ];
     $stmt = $this->con->query($sql, $params);
-    echo $stmt;
     if ($stmt->rowCount() > 0)
       return 1;
     else

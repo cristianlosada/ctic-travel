@@ -123,7 +123,6 @@ function consultar_hospedajes() {
         generar_tabla_hospedajes(hospedajes);
         datos_hospedajes = hospedajes;
       }
-      $("#form_hospedaje")[0].reset();
     },
     error: function (response) {
       alert("Error al crear el hospedaje.");

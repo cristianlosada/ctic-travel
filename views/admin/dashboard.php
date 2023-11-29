@@ -127,7 +127,7 @@ if ('admin' !== $_SESSION['user_role']) {
   <div class="container mt-4" id="div_estadistica" hidden>
   </div>
   <footer>
-    <p>&copy; 2023  Desarrollado por Crissoft con ♥️. | <a href="https://www.linkedin.com/in/cristian-losada-6ab093162/">Lindkeln</a></p>
+    <p>&copy; 2023  Desarrollado por Crissoft con ♥️. | <a href="https://www.linkedin.com/in/cristian-losada-6ab093162/">linkedin</a></p>
   </footer>
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -137,6 +137,7 @@ if ('admin' !== $_SESSION['user_role']) {
   <script src="../../assets/js/dashboard_admin.js"></script>
   <script src="../../assets/js/destinos_admin.js"></script>
   <script src="../../assets/js/hospedajes_admin.js"></script>
+  <script src="../../assets/js/planes_admin.js"></script>
 
 </body>
 <script>

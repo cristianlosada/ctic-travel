@@ -85,6 +85,9 @@
           success: function(response) {
             // Manejar la respuesta del servidor
             response = JSON.parse(response);
+            $("input[name='name']").val('');
+            $("input[name='email']").val('');
+            $("input[name='password']").val('');
             if (response === '1') {
               $("#passwordError").text("El Email ya se encuentra registrado en el sistema.");
               return;

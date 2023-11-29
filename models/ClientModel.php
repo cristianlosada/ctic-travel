@@ -34,9 +34,34 @@ class ClientModel {
     }
     return 0;
   }
+  public function eliminar_suscripcion() {
+    try {
+      $sql = "DELETE FROM
+                planes_usuarios
+              WHERE
+                usuario_id            = :usuario_id
+                AND plan_turistico_id = :plan_turistico_id";
+      //Asignación de reemplazo de parámetros
+      session_start();
+      $params = [
+      ':usuario_id'         => $_SESSION["user"],
+      ':plan_turistico_id'  => $_POST['plan_turistico_id'],
+      ];
+      $stmt = $this->con->query($sql, $params);
+      if ($stmt->rowCount() > 0)
+        return $this->consultar_planes_turisticos_disponibles();      
+      else
+        return 0;
+    } catch (PDOException $e) {
+      // Manejar errores de la base de datos según sea necesario
+      echo "Error de la base de datos: " . $e->getMessage();
+    }
+    return 0;
+  }
   public function consultar_planes_turisticos_disponibles() {
     session_start();
-    $plan_usuario = $this->consultar_planes_usuarios($_SESSION["user"]);
+    $plan_usuario    = $this->consultar_planes_usuarios($_SESSION["user"]);
+    $planes_vendidos = $this->consultar_planes();
     try {
       $sql = "SELECT
                 pla_tur_pri.id,
@@ -64,7 +89,7 @@ class ClientModel {
                 pla_hos.id                              AS plan_hospedaje_id
               FROM
                 planes_turisticos_principal AS pla_tur_pri
-                LEFT JOIN planes_destinos  AS pla_des     ON (pla_tur_pri.id       = pla_des.plan_principal_id)
+                LEFT JOIN planes_destinos   AS pla_des    ON (pla_tur_pri.id       = pla_des.plan_principal_id)
                 LEFT JOIN planes_hospedajes AS pla_hos    ON (pla_tur_pri.id       = pla_hos.plan_principal_id)
                 LEFT JOIN destinos         AS dest        ON (pla_des.destino_id   = dest.id)
                 LEFT JOIN hospedajes       AS hos         ON (pla_hos.hospedaje_id = hos.id)
@@ -84,7 +109,7 @@ class ClientModel {
         $datos[$rows['id']][] = $rows;
       }
       $stmt = null;
-      return ['planes' => $datos, 'planes_usuarios' => $plan_usuario, 'usuario' => $_SESSION["user"]];
+      return ['planes' => $datos, 'planes_usuarios' => $plan_usuario, 'planes_vendidos' => $planes_vendidos, 'usuario' => $_SESSION["user"]];
     } catch (PDOException $e) {
       echo "Error de la base de datos: " . $e->getMessage();
     }
@@ -99,6 +124,23 @@ class ClientModel {
       $hospedajes = $stmt->fetchAll(PDO::FETCH_ASSOC);
       foreach ($hospedajes as $rows) {
         $datos[$rows['plan_turistico_id']] = $rows;
+      }
+      $stmt = null;
+      return $datos;
+    } catch (PDOException $e) {
+      echo "Error de la base de datos: " . $e->getMessage();
+    }
+    return 0;
+  }
+  public function consultar_planes() {
+    try {
+      $sql = "SELECT * FROM planes_usuarios;";
+      $params   = [];
+      $stmt     = $this->con->query($sql, $params);
+      $datos    = [];
+      $hospedajes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      foreach ($hospedajes as $rows) {
+        $datos[$rows['plan_turistico_id']][] = $rows;
       }
       $stmt = null;
       return $datos;

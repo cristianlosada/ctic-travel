@@ -24,6 +24,9 @@
                     <li><strong>Duración:</strong> 5 días, 4 noches</li>
                 </ul>
                 <a href="#" class="btn btn-primary">Ver Detalles</a>
+
+                <!-- Botón para ir al login -->
+                <button class="btn btn-secondary ml-2" onclick="irAlLogin()">Ir al Login</button>
             </div>
         </div>
 
@@ -33,6 +36,12 @@
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        // Función para redirigir al usuario al área de inicio de sesión (login)
+        function irAlLogin() {
+            // Puedes ajustar la URL según la estructura de tu aplicación
+            window.location.href = "/ctic-travel/login.php";
+        }
+    </script>
 </body>
-
 </html>
