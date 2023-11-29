@@ -120,10 +120,14 @@ class PlanesTurismoModel {
                 pla_tur_pri.tipo_transporte,
                 pla_tur_pri.cantidad_paquetes_habilitados,
                 COUNT(pla_usu.plan_turistico_id)                                               AS vendidos,
-                (pla_tur_pri.cantidad_paquetes_habilitados - COUNT(pla_usu.plan_turistico_id)) AS restante
+                (pla_tur_pri.cantidad_paquetes_habilitados - COUNT(pla_usu.plan_turistico_id)) AS restante,
+                COUNT(pla_des.destino_id)                                                      AS destinos,
+                COUNT(pla_hos.hospedaje_id)                                                    AS hospedajes
               FROM
-                planes_turisticos_principal AS pla_tur_pri
-                LEFT JOIN planes_usuarios   AS pla_usu     ON (pla_tur_pri.id = pla_usu.plan_turistico_id)
+                planes_turisticos_principal   AS pla_tur_pri
+                LEFT JOIN planes_usuarios     AS pla_usu     ON (pla_tur_pri.id             = pla_usu.plan_turistico_id)
+                INNER JOIN planes_destinos    AS pla_des     ON (pla_des.plan_principal_id  = pla_tur_pri.id)
+                INNER JOIN planes_hospedajes  AS pla_hos     ON (pla_hos.plan_principal_id  = pla_tur_pri.id)
               WHERE
                 pla_tur_pri.estado = 1
               GROUP BY
@@ -181,9 +185,10 @@ class PlanesTurismoModel {
   }
   public function eliminar_plan_turismo() {
     try {
-      $sql      = "UPDATE planes_turisticos_principal SET estado = '0' WHERE id = :id;";
-      $params   = [':id' => $_POST['plan_turistico_id']];
-      $stmt     = $this->con->query($sql, $params);;
+      $sql      = "UPDATE planes_turisticos_principal SET estado = 0 WHERE id = :id";
+      // $params = [];
+      $params   = [':id' => intval($_POST['plan_turistico_id'])];
+      $stmt     = $this->con->query($sql, $params);
       if ($stmt->rowCount() > 0)
         return $this->consultar_planes_turisticos();      
       else

@@ -130,7 +130,7 @@ function generar_tabla_planes(planes) {
       html += ` <tr>
                   <td>${cont}</td>
                   <td>
-                    
+                  ${planes[i].destinos}
                   </td>
                   <td>${cont}</td>
                   <td>$${planes[i].precio}</td>
@@ -243,8 +243,9 @@ function consultar_planes_turisticos_reportes() {
       data: `action=eliminar_plan_turismo&plan_turistico_id=${plan_turistico_id}`,
       success: function (response) {
         let planes = JSON.parse(response);
+        console.log(planes)
         if (planes !== 0)
-          generar_tabla_destinos(planes);
+          generar_tabla_planes(planes);
         $("#btn_crear_destino").text('Crear Plan Turistico');
         sw_edita_destino  = 0;
       },
